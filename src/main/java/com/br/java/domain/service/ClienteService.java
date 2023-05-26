@@ -13,11 +13,11 @@ import com.br.java.utils.Formatador;
 public class ClienteService {
 
 	private ClientesRepository _repository;
-	private Formatador _formatador;
+	private Formatador formatador;
 
 	public ClienteService(ClientesRepository repository, Formatador formatador) {
 		_repository = repository;
-		_formatador = formatador;
+		this.formatador = formatador;
 	}
 
 	public List<Cliente> AllClientes() {
@@ -26,7 +26,7 @@ public class ClienteService {
 
 		for (Cliente cliente : clientesList) {
 			if (cliente.getCpf() != null)
-				cliente.setCpf(_formatador.FormatCpf(cliente.getCpf()));
+				cliente.setCpf(formatador.FormatCpf(cliente.getCpf()));
 		}
 
 		return clientesList;
@@ -37,7 +37,7 @@ public class ClienteService {
 		Optional<Cliente> clientes = _repository.findById(id);
 		if (clientes.isPresent()) {
 			Cliente cliente = clientes.get();
-			cliente.setCpf(_formatador.FormatCpf(cliente.getCpf()));
+			cliente.setCpf(formatador.FormatCpf(cliente.getCpf()));
 			return cliente;
 
 		} else {
@@ -47,11 +47,12 @@ public class ClienteService {
 	}
 
 	public Cliente SalvarCliente(Cliente cliente) {
-
+        cliente.setCpf(formatador.LimparCpf(cliente.getCpf()));
 		return _repository.save(cliente);
 	}
 
 	public Cliente AtualizarCliente(Cliente cliente) {
+	    cliente.setCpf(formatador.LimparCpf(cliente.getCpf()));
 		return _repository.save(cliente);
 
 	}

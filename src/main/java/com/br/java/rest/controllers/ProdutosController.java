@@ -20,7 +20,7 @@ import com.br.java.domain.entity.Produto;
 import com.br.java.domain.repository.ProdutosRepository;
 
 @RestController
-@RequestMapping("api/Produtos")
+@RequestMapping("api/produtos")
 public class ProdutosController {
 
 	private ProdutosRepository _repository;
@@ -43,14 +43,14 @@ public class ProdutosController {
 		}
 	}
 
-	@GetMapping("/ById/{id}")
+	@GetMapping("/by-id/{id}")
 	public Produto GetProdutoById(@PathVariable Integer id) {
 
 		return _repository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
 	}
 
-	@PostMapping("/Cadastrar")
+	@PostMapping("/cadastrar")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Produto PostProduto(@RequestBody @Valid Produto produto) {
 		try {
@@ -62,7 +62,7 @@ public class ProdutosController {
 		}
 	}
 
-	@PutMapping("/Atualizar")
+	@PutMapping("/atualizar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public Produto PutProduto(@RequestBody @Valid Produto produto) {
 		try {
@@ -72,7 +72,7 @@ public class ProdutosController {
 		}
 	}
 	
-	@DeleteMapping("/Deletar/{id}")
+	@DeleteMapping("/deletar/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public Produto DeleteProduto(@PathVariable Integer id) {
 

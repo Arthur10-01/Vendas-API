@@ -43,7 +43,7 @@ public class ClientesController {
 		}
 	}
 
-	@GetMapping("/ById/{id}")
+	@GetMapping("/by-id/{id}")
 	public Cliente GetById(@PathVariable Integer id) {
 
 		try {
@@ -56,7 +56,7 @@ public class ClientesController {
 		}
 	}
 
-	@PostMapping("/Cadastrar")
+	@PostMapping("/cadastrar")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cliente PostCliente(@RequestBody @Valid Cliente cliente) {
 		try {
@@ -67,7 +67,7 @@ public class ClientesController {
 		}
 	}
 
-	@DeleteMapping("/Deletar/{id}")
+	@DeleteMapping("/deletar/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void DeleteCliente(@PathVariable Integer id) {
 
@@ -81,7 +81,7 @@ public class ClientesController {
 		}
 	}
 
-	@PutMapping("/Atualizar")
+	@PutMapping("/atualizar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public Cliente PutCliente(@RequestBody @Valid Cliente cliente) {
 		try {
