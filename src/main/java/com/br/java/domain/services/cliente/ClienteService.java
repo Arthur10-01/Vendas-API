@@ -1,4 +1,4 @@
-package com.br.java.domain.service;
+package com.br.java.domain.services.cliente;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import com.br.java.domain.repository.ClientesRepository;
 import com.br.java.utils.Formatador;
 
 @Service
-public class ClienteService {
+public class ClienteService implements IClienteService{
 
 	private ClientesRepository _repository;
 	private Formatador formatador;
@@ -32,7 +32,7 @@ public class ClienteService {
 		return clientesList;
 	}
 
-	public Cliente ClienteById(Integer id) throws Exception {
+	public Cliente ClienteById(Integer id) {
 
 		Optional<Cliente> clientes = _repository.findById(id);
 		if (clientes.isPresent()) {
@@ -41,7 +41,7 @@ public class ClienteService {
 			return cliente;
 
 		} else {
-			throw new Exception("Usuário não encontrado");
+			return clientes.get();
 		}
 
 	}

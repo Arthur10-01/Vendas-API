@@ -17,16 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.br.java.domain.entity.Cliente;
-import com.br.java.domain.repository.ClientesRepository;
-import com.br.java.domain.service.ClienteService;
+import com.br.java.domain.services.cliente.IClienteService;
 
 @RestController
 @RequestMapping("/api/clientes")
 public class ClientesController {
 
-	private ClienteService _service;
+	private  IClienteService _service;
 
-	public ClientesController(ClienteService service) {
+	public ClientesController( IClienteService service) {
 		_service = service;
 	}
 
@@ -47,8 +46,8 @@ public class ClientesController {
 	public Cliente GetById(@PathVariable Integer id) {
 
 		try {
-
 			return _service.ClienteById(id);
+			
 
 		} catch (Exception ex) {
 

@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.br.java.domain.entity.Produto;
-import com.br.java.domain.repository.ProdutosRepository;
+import com.br.java.domain.services.produto.IProdutoService;
 
 @RestController
 @RequestMapping("api/produtos")
 public class ProdutosController {
 
-	private ProdutosRepository _repository;
+	private IProdutoService _service;
 
-	public ProdutosController(ProdutosRepository repository) {
+	public ProdutosController(IProdutoService service) {
 
-		_repository = repository;
+		_service = service;
 	}
 
 	@GetMapping
@@ -35,7 +35,7 @@ public class ProdutosController {
 
 		try {
 
-			return _repository.findAll();
+			return _service.AllProduto();
 		}
 
 		catch (Exception ex) {
@@ -46,15 +46,22 @@ public class ProdutosController {
 	@GetMapping("/by-id/{id}")
 	public Produto GetProdutoById(@PathVariable Integer id) {
 
-		return _repository.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+		try {
+			return _service.ProdutoById(id);
+			
+
+		} catch (Exception ex) {
+
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+		}
+				
 	}
 
 	@PostMapping("/cadastrar")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Produto PostProduto(@RequestBody @Valid Produto produto) {
 		try {
-			return _repository.save(produto);
+			return _service.SalvarProduto(produto);
 		}
 
 		catch (Exception ex) {
@@ -66,7 +73,7 @@ public class ProdutosController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public Produto PutProduto(@RequestBody @Valid Produto produto) {
 		try {
-			return _repository.save(produto);
+			return _service.AlterarProduto(produto);
 		} catch (Exception ex) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
@@ -74,12 +81,16 @@ public class ProdutosController {
 	
 	@DeleteMapping("/deletar/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public Produto DeleteProduto(@PathVariable Integer id) {
+	public void DeleteProduto(@PathVariable Integer id) {
 
-		return _repository.findById(id).map(produto -> {
-			_repository.delete(produto);
-			return produto;
-		}).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+		try {
+			_service.DeletarProduto(id);
+			return;
+
+		} catch (Exception ex) {
+
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+		}
 	}
 
 }
