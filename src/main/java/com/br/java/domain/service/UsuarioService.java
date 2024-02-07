@@ -2,61 +2,78 @@ package com.br.java.domain.service;
 
 import java.util.List;
 import java.util.Optional;
-
+import javax.persistence.EntityManager;
 import org.springframework.stereotype.Service;
-
-import com.br.java.domain.entity.Cliente;
-import com.br.java.domain.repository.ClientesRepository;
+import com.br.java.domain.entity.Usuario;
+import com.br.java.domain.repository.UsuarioRepository;
 import com.br.java.utils.Formatador;
 
 @Service
-public class ClienteService {
+public class UsuarioService {
 
-	private ClientesRepository _repository;
+	private UsuarioRepository _repository;
 	private Formatador _formatador;
 
-	public ClienteService(ClientesRepository repository, Formatador formatador) {
+	public UsuarioService(UsuarioRepository repository, Formatador formatador) {
 		_repository = repository;
 		_formatador = formatador;
 	}
 
-	public List<Cliente> AllClientes() {
+	public List<Usuario> AllUsuarios() {
 
-		List<Cliente> clientesList = _repository.findAll();
+		List<Usuario> usuariosList = _repository.findAll();
 
-		for (Cliente cliente : clientesList) {
-			if (cliente.getCpf() != null)
-				cliente.setCpf(_formatador.FormatCpf(cliente.getCpf()));
+		for (Usuario usuario : usuariosList) {
+			if (usuario.getCpf() != null)
+				usuario.setCpf(_formatador.FormatCpf(usuario.getCpf()));
 		}
 
-		return clientesList;
+		return usuariosList;
 	}
 
-	public Cliente ClienteById(Integer id) throws Exception {
+	public Usuario UsuarioById(Integer id) throws Exception {
 
-		Optional<Cliente> clientes = _repository.findById(id);
-		if (clientes.isPresent()) {
-			Cliente cliente = clientes.get();
-			cliente.setCpf(_formatador.FormatCpf(cliente.getCpf()));
-			return cliente;
+		Optional<Usuario> usuarios = _repository.findById(id);
+		if (usuarios.isPresent()) {
+			Usuario usuario = usuarios.get();
+			usuario.setCpf(_formatador.FormatCpf(usuario.getCpf()));
+			return usuario;
 
 		} else {
 			throw new Exception("Usuário não encontrado");
 		}
 
 	}
+	
+	public Usuario UsuarioByEmailSenha(String email, String senha) throws Exception {
 
-	public Cliente SalvarCliente(Cliente cliente) {
+		List<Usuario> usuarios = _repository.encontrarPorEmailESenha(email, senha);
+		if (usuarios.size() > 0) {
+			Usuario usuario = new Usuario();
+			for(Usuario item : usuarios) {
+				usuario = item;
+			}
+			
+			return usuario;
+		} else {
+			throw new Exception("Usuário não encontrado");
+		}
 
-		return _repository.save(cliente);
+	}
+	
+	
+
+	public Usuario SalvarUsuario(Usuario usuario) {
+
+		return _repository.save(usuario);
 	}
 
-	public Cliente AtualizarCliente(Cliente cliente) {
-		return _repository.save(cliente);
+	public Usuario AtualizarUsuario(Usuario usuario) {
+		return _repository.save(usuario);
 
 	}
 
-	public void DeletarCliente(Integer id) {
+	public void DeletarUsuario(Integer id) {
 
 		_repository.deleteById(id);
 

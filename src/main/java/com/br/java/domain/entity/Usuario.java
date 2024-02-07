@@ -13,15 +13,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table
-public class Cliente {
+public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
 	private String cpf;
+	private String email;
+	private String senha;
 
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "usuario")
 	@JsonIgnore
 	private List<Pedido> pedidos;
 
@@ -35,6 +37,22 @@ public class Cliente {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	public String getNome() {

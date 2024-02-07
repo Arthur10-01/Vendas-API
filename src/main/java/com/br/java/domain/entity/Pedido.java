@@ -23,8 +23,8 @@ public class Pedido {
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "CLIENTE_ID")
-	private Cliente cliente;
+	@JoinColumn(name = "USUARIO_ID")
+	private Usuario usuario;
 	private LocalDate dataPedido;
 	private double total;
 
@@ -43,12 +43,12 @@ public class Pedido {
 		this.id = id;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public LocalDate getDataPedido() {

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,26 +17,25 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.br.java.domain.entity.Cliente;
-import com.br.java.domain.repository.ClientesRepository;
-import com.br.java.domain.service.ClienteService;
+import com.br.java.domain.entity.Usuario;
+import com.br.java.domain.service.UsuarioService;
 
 @RestController
-@RequestMapping("/api/clientes")
-public class ClientesController {
+@RequestMapping("/api/usuario")
+public class UsuarioController {
 
-	private ClienteService _service;
+	private UsuarioService _service;
 
-	public ClientesController(ClienteService service) {
+	public UsuarioController(UsuarioService service) {
 		_service = service;
 	}
 
 	@GetMapping
-	public List<Cliente> GetAllClientes() {
+	public List<Usuario> GetAllUsuarios() {
 
 		try {
 
-			return _service.AllClientes();
+			return _service.AllUsuarios();
 
 		} catch (Exception ex) {
 
@@ -43,12 +43,27 @@ public class ClientesController {
 		}
 	}
 
-	@GetMapping("/ById/{id}")
-	public Cliente GetById(@PathVariable Integer id) {
+	@GetMapping("/byid/{id}")
+	public Usuario GetById(@PathVariable Integer id) {
 
 		try {
 
-			return _service.ClienteById(id);
+			return _service.UsuarioById(id);
+
+		} catch (Exception ex) {
+
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+		}
+	}
+	@CrossOrigin(origins = "http://localhost:8090")
+	@PostMapping("/logar")
+	public Usuario GetUsuarioLogar(@RequestBody @Valid Usuario usuario) {
+
+		try {
+			
+            System.out.println("Passei aqui");
+            return _service.UsuarioByEmailSenha(usuario.getEmail(), usuario.getSenha());
+			
 
 		} catch (Exception ex) {
 
@@ -56,23 +71,23 @@ public class ClientesController {
 		}
 	}
 
-	@PostMapping("/Cadastrar")
+	@PostMapping("/cadastrar")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente PostCliente(@RequestBody @Valid Cliente cliente) {
+	public Usuario PostUsuario(@RequestBody @Valid Usuario Usuario) {
 		try {
-			return _service.SalvarCliente(cliente);
+			return _service.SalvarUsuario(Usuario);
 		} catch (Exception ex) {
 
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 	}
 
-	@DeleteMapping("/Deletar/{id}")
+	@DeleteMapping("/deletar/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void DeleteCliente(@PathVariable Integer id) {
+	public void DeleteUsuario(@PathVariable Integer id) {
 
 		try {
-			_service.DeletarCliente(id);
+			_service.DeletarUsuario(id);
 			return;
 
 		} catch (Exception ex) {
@@ -81,11 +96,11 @@ public class ClientesController {
 		}
 	}
 
-	@PutMapping("/Atualizar")
+	@PutMapping("/atualizar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public Cliente PutCliente(@RequestBody @Valid Cliente cliente) {
+	public Usuario PutUsuario(@RequestBody @Valid Usuario usuario) {
 		try {
-			return _service.AtualizarCliente(cliente);
+			return _service.AtualizarUsuario(usuario);
 
 		} catch (Exception ex) {
 
